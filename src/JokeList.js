@@ -15,13 +15,13 @@ const JokeList = () => {
 
       try {
         while (collectionOfJokes.length < 5) {
-          let res = await axios.get("https://icanhazdadjoke.com", {
+          const res = await axios.get("https://icanhazdadjoke.com", {
             headers: { Accept: "application/json" },
           });
 
-          let newJoke = res.data.joke;
+          const newJoke = res.data;
 
-          collectionOfJokes.push(newJoke);
+          collectionOfJokes.push({ ...newJoke, votes: 0 });
         }
 
         setJokes(collectionOfJokes);
@@ -31,8 +31,23 @@ const JokeList = () => {
       }
     }
 
-    fetchData();
+    if (jokes.length === 0) fetchData();
   }, [jokes]);
+
+  const getNewJokes = () => {
+    setJokes([]);
+    setIsLoading(true);
+  };
+
+  const vote = (id, voteValue) => {
+    setJokes((currJokes) => {
+      return currJokes.map((joke) => {
+        return joke.id === id
+          ? { ...joke, votes: joke.votes + voteValue }
+          : joke;
+      });
+    });
+  };
 
   return (
     <div>
@@ -41,15 +56,25 @@ const JokeList = () => {
           <i className="fas fa-4x fa-spinner fa-spin" />
         </div>
       ) : (
-        <ul>
-          {jokes.map((joke) => {
-            return (
-              <li>
-                <Joke text={joke} />
-              </li>
-            );
-          })}
-        </ul>
+        <div>
+          <ul>
+            {/* future iterations to include uuid instead of idx as key */}
+            {jokes.map((joke, idx) => {
+              return (
+                <li key={idx}>
+                  <Joke
+                    key={joke.id}
+                    id={joke.id}
+                    text={joke.joke}
+                    votes={joke.votes}
+                    vote={vote}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+          <button onClick={getNewJokes}>Get More Jokes</button>
+        </div>
       )}
     </div>
   );
