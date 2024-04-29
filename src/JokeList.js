@@ -73,7 +73,9 @@ const JokeList = () => {
               );
             })}
           </ul>
-          <button onClick={getNewJokes}>Get More Jokes</button>
+          <button className="JokeList-getmore" onClick={getNewJokes}>
+            Get More Jokes
+          </button>
         </div>
       )}
     </div>

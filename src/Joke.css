@@ -3,10 +3,6 @@
   padding: 0.2em;
 }
 
-.Joke-locked {
-  background-color: #ccc;
-}
-
 .Joke-votearea {
   display: inline-block;
   vertical-align: top;
@@ -14,7 +10,6 @@
 
 .Joke-votearea > * {
   margin-right: 1em;
-
 }
 .Joke-text {
   margin-left: 1em;
